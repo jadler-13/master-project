@@ -1,0 +1,76 @@
+! lines starting with "!simulate" are inputs to sim_mx.
+! lines starting with "!!simulate" or !(don't) are commented out
+! I suggest to make SIMULATE.INP a symlink to XDS.INP (or vice versa).
+!
+! sim_mx does not consider AIR= and FRACTION_OF_POLARIZATION=; it implies values
+! of 0 and 0.5
+!
+! inputs for sim_mx (values with defaults do not have to be provided):
+
+!simulate UNIT_CELL_A-AXIS= 77.9 0 0 ! this and the next 2 lines !
+!simulate UNIT_CELL_B-AXIS= 0 77.9 0 ! are the only              !
+!simulate UNIT_CELL_C-AXIS= 0 0 77.9 ! required inputs to sim_mx !
+!!simulate BIG_CRYSTAL=TRUE  ! default=TRUE; FALSE for infinitesimally small reflections (affecting a single pixel)
+!  default=TRUE which distributes counts to four adjacent pixels proportional to distance
+!simulate EXPOSURE_FACTOR= 0.035 ! factor to multiply input intensities with; 1 is the default
+!(don't)simulate DEBUG= -33   -13    -8 ! monitor contributions to a reflection
+!(don't)simulate BACKGROUND= 30.
+!simulate GAIN= 1
+!(don't)simulate WAVELENGTH_STDDEV= 0.1      
+!(don't)simulate BEAM_STDDEV= 0.3 0.3         
+!(don't)simulate CELL_STDDEV= 2.0 2.0 2.0     
+!(don't)simulate ORIENTATION_STDDEV= 2.0 2.0 2.0      
+!simulate SENSITIVITY_IN_PHI_SUBRANGE= 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+!(don't)simulate SENSITIVITY_IN_PHI_SUBRANGE= 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+!(don't)simulate SENSITIVITY_IN_PHI_SUBRANGE= 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 0 1
+!(don't)simulate MODULATION_IN_PHI= 0.5 10 0
+! there are more keywords; the comprehensive list is in Table 1 of the paper
+!
+! The following inputs are for XDS; some (namely NAME_TEMPLATE_OF_DATA_FRAMES,OSCILLATION_RANGE,X-RAY_WAVELENGTH
+! DIRECTION_OF_DETECTOR_X-AXIS,DIRECTION_OF_DETECTOR_Y-AXIS,ROTATION_AXIS)
+! are evaluated by sim_mx as well
+!
+JOB=XYCORR INIT COLSPOT IDXREF DEFPIX INTEGRATE CORRECT
+!JOB=CORRECT
+DELPHI= 16
+REFINE(INTEGRATE)= !
+REFINE(CORRECT)=CELL BEAM ORIENTATION
+CORRECTIONS=
+
+REFERENCE_DATA_SET= ../../indexing_reference.hkl
+DATA_RANGE= 1 180
+SPOT_RANGE= 1 180
+OSCILLATION_RANGE= 0.5
+INCLUDE_RESOLUTION_RANGE= 50 1.79
+ !====================== GEOMETRICAL PARAMETERS ===============================
+ ORGX=600  ORGY=610  !Detector origin (pixels).  ORGX=NX/2; ORGY=NY/2
+ DETECTOR_DISTANCE=150.0   !(mm)
+ X-RAY_WAVELENGTH= 1.0          !Angstroem
+ SPACE_GROUP_NUMBER= 0 ! zero for unknown crystals; cell constants are ignored.
+ UNIT_CELL_CONSTANTS= 77.9 77.9 77.9 90 90 90
+ NAME_TEMPLATE_OF_DATA_FRAMES= /tmp/jadler/image/insu_???.cbf
+ NX=1200 NY=1200 QX=0.15 QY=0.15  !images  ???.mar1200 or ???.pck1200
+ MINIMUM_VALID_PIXEL_VALUE=0  OVERLOAD=100000
+! SENSOR_THICKNESS=0.0        
+!SILICON=-1.0
+SILICON=0.0       !Commenting this line in means no silicon efficiency correction
+! DETECTOR= MAR345  MINIMUM_VALID_PIXEL_VALUE=0  OVERLOAD=130000
+ DETECTOR= PILATUS  MINIMUM_VALID_PIXEL_VALUE=0  OVERLOAD=1000000
+ DIRECTION_OF_DETECTOR_X-AXIS= 1.0 0.0 0.0
+ DIRECTION_OF_DETECTOR_Y-AXIS= 0.0 1.0 0.0 ! 0.0 cos(2theta) sin(2theta)
+ TRUSTED_REGION=0.0 1.42 !Relative radii limiting trusted detector region
+!====================== GEOMETRICAL PARAMETERS ===============================
+ ROTATION_AXIS= 1.0 0.0 0.0
+ INCIDENT_BEAM_DIRECTION=0.0 0.0 1.0
+! FRACTION_OF_POLARIZATION=0.99 !default=0.5 for unpolarized beam;0.90 at DESY;
+! POLARIZATION_PLANE_NORMAL= 0.0 1.0 0.0
+AIR= 0.000001  ! 0.0005        !Air absorption coefficient of x-rays
+!FRIEDEL'S_LAW=FALSE !Default is TRUE.
+STRICT_ABSORPTION_CORRECTION=TRUE
+
+!STARTING_ANGLE=  0.0      STARTING_FRAME=1
+!used to define the angular origin about the rotation axis.
+!Default:  STARTING_ANGLE=  0 at STARTING_FRAME=first data image
+!MINIMUM_NUMBER_OF_PIXELS_IN_A_SPOT=20          !used by: COLSPOT
+MAXIMUM_ERROR_OF_SPOT_POSITION=9.0
+MINIMUM_FRACTION_OF_INDEXED_SPOTS=0.3
