@@ -67,7 +67,7 @@ ssq = []
 print("reading values...")
 
 #read atomic B-factors from original model and add them to respective lists;
-with open("replace_this_modified_b_unchanged.pdb", "r") as fin:
+with open("replace_this_b_unchanged.pdb", "r") as fin:
     for line in fin:
         col = line.split()
         if not col:
@@ -107,7 +107,7 @@ with open("replace_this_modified_b_unchanged.pdb", "r") as fin:
 
 #read atomic B-factors from refined simulation models and add them to respective lists;
 for i in range(4):
-    with open("{}/refine/replace_this_modified_refine_001.pdb".format(parameters[i]), "r") as fin:
+    with open("{}/refine/replace_this_refine_001.pdb".format(parameters[i]), "r") as fin:
         B_ref.append([])
         B_ref_het.append([])
         for line in fin:
