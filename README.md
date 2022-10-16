@@ -8,7 +8,7 @@ Successfully running the scripts in this repository will require at least 2 GB o
 
 For details on the purpose of this project, please look at *master_thesis_adler.pdf*
 
-To reproduce my results, run *new_model.py* in the *models* directory.
+To reproduce my results, make sure to have numpy==1.19.1 and matplotlib==3.3.0 installed, then run *new_model.py* in the *models* directory.
 
 Once the new directory exists, move there and enter "sh bg_simulate_all &", then enter "disown", in order to simulate everything in the background;
 if you do this, you can close the console window while you wait; the simulations will likely take several hours (or days);
